@@ -3,14 +3,17 @@
 ## 프로젝트 구조
 
 ```
-moviepedia
-├─ package-lock.json
-├─ package.json
-├─ public
-│  └─ index.html
-└─ src
-   ├─ App.js
-   └─ index.js
+📦
+├─ .gitignore
+├─ README.md
+├─ mock.json
+├─ package-lock.json
+├─ package.json
+├─ public
+│  └─ index.html
+└─ src
+   ├─ App.js
+   └─ index.js
 ```
 
 ## 명령어
