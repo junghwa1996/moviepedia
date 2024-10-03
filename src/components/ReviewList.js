@@ -15,7 +15,11 @@ const formatDate = (value) => {
  * @example
  * <ReviewListItem item={item} />
  */
-const ReviewListItem = ({ item }) => {
+const ReviewListItem = ({ item, onDelete }) => {
+  const handleDeleteClick = () => {
+    onDelete(item.id);
+  };
+
   return (
     <div className='ReviewListItem'>
       <img className='ReviewListItem-img' src={item.imgUrl} alt={item.title} />
@@ -24,6 +28,7 @@ const ReviewListItem = ({ item }) => {
         <p>{item.rating}</p>
         <p>{formatDate(item.createdAt)}</p>
         <p>{item.content}</p>
+        <button onClick={handleDeleteClick}>삭제</button>
       </div>
     </div>
   );
@@ -34,13 +39,14 @@ const ReviewListItem = ({ item }) => {
  * @example
  * <ReviewList items={items} />
  */
-const ReviewList = ({ items }) => {
+
+const ReviewList = ({ items, onDelete }) => {
   return (
     <ul>
       {items.map((item) => {
         return (
-          <li>
-            <ReviewListItem item={item} />
+          <li key={item.id}>
+            <ReviewListItem item={item} onDelete={onDelete} />
           </li>
         );
       })}
