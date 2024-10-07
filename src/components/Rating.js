@@ -11,7 +11,7 @@ function Rating({ value = 0 }) {
   return (
     <div>
       {RATINGS.map((rating) => (
-        <Star selected={value >= rating} />
+        <Star key={rating} selected={value >= rating} />
       ))}
     </div>
   );
