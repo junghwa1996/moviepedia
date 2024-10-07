@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ReviewList from "./components/ReviewList";
 import { getReviews } from "./api";
+import ReviewForm from "./components/ReviewForm";
 
 /** mock.json
  * id : 고유 id
@@ -65,6 +66,7 @@ function App() {
         <button onClick={handleNewestClick}>최신순</button>
         <button onClick={handleBestClick}>인기순</button>
       </div>
+      <ReviewForm />
       <ReviewList items={sortedItems} onDelete={handleDelete} />
 
       {hasNext && (
