@@ -19,7 +19,19 @@ export async function createReviews(formData) {
     body: formData,
   });
   if (!response.ok) {
-    throw new Error("리뷰를 불러오는데 실패했습니다");
+    throw new Error("리뷰를 생성하는데 실패했습니다");
+  }
+  const body = await response.json();
+  return body;
+}
+
+export async function updateReview(id, formData) {
+  const response = await fetch(`${BASE_URL}/film-reviews/${id}`, {
+    method: "PUT",
+    body: formData,
+  });
+  if (!response.ok) {
+    throw new Error("리뷰를 수정하는데 실패했습니다");
   }
   const body = await response.json();
   return body;

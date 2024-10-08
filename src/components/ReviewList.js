@@ -1,24 +1,20 @@
+import { useState } from "react";
 import Rating from "./Rating";
 import "./ReviewList.css";
+import ReviewForm from "./ReviewForm";
 
-/**
- * 주어진 날짜를 'YYYY. M. D' 형식으로 변환하는 함수
- * @param {string|number|Date} value - 변환할 날짜 (Date 객체, 타임스탬프 또는 날짜 문자열)
- * @returns {string} - 포맷된 날짜 문자열
- */
 const formatDate = (value) => {
   const date = new Date(value);
   return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}`;
 };
 
-/**
- * ReviewListItem 컴포넌트는 리뷰 항목 하나를 표시합니다.
- * @example
- * <ReviewListItem item={item} />
- */
-const ReviewListItem = ({ item, onDelete }) => {
+const ReviewListItem = ({ item, onDelete, onEdit }) => {
   const handleDeleteClick = () => {
     onDelete(item.id);
+  };
+
+  const handleEditClick = () => {
+    onEdit(item.id);
   };
 
   return (
@@ -29,25 +25,49 @@ const ReviewListItem = ({ item, onDelete }) => {
         <Rating value={item.rating} />
         <p>{formatDate(item.createdAt)}</p>
         <p>{item.content}</p>
+        <button onClick={handleEditClick}>수정</button>
         <button onClick={handleDeleteClick}>삭제</button>
       </div>
     </div>
   );
 };
 
-/**
- * ReviewList 컴포넌트는 여러 리뷰 항목을 표시합니다.
- * @example
- * <ReviewList items={items} />
- */
+const ReviewList = ({ items, onDelete, onUpdate, onUpdateSuccess }) => {
+  const [editingId, setEditingId] = useState(null);
 
-const ReviewList = ({ items, onDelete }) => {
+  const handleCancel = () => setEditingId(null);
   return (
     <ul>
       {items.map((item) => {
+        if (item.id === editingId) {
+          const { id, imgUrl, title, rating, content } = item;
+          const initialValues = { title, rating, content, imgUrl: null };
+
+          const handleSubmit = (formData) => onUpdate(id, formData);
+
+          const handleSubmitSuccess = (review) => {
+            onUpdateSuccess(review);
+            setEditingId(null);
+          };
+          return (
+            <li key={item.id}>
+              <ReviewForm
+                initialValues={initialValues}
+                initialPreview={imgUrl}
+                onCancel={handleCancel}
+                onSubmit={handleSubmit}
+                onSubmitSuccess={handleSubmitSuccess}
+              />
+            </li>
+          );
+        }
         return (
           <li key={item.id}>
-            <ReviewListItem item={item} onDelete={onDelete} />
+            <ReviewListItem
+              item={item}
+              onDelete={onDelete}
+              onEdit={setEditingId}
+            />
           </li>
         );
       })}
