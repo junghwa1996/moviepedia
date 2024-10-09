@@ -4,6 +4,7 @@ import { getReviews, createReviews, updateReview, deleteReview } from "./api";
 import ReviewForm from "./components/ReviewForm";
 import useAsync from "./hooks/useAsync";
 import LocaleContext from "./contexts/LocaleContext";
+import LocaleSelect from "./components/LocaleSelect";
 
 /** mock.json
  * id : 고유 id
@@ -16,6 +17,7 @@ import LocaleContext from "./contexts/LocaleContext";
  */
 const LIMIT = 6;
 function App() {
+  const [locale, setLocale] = useState("ko");
   const [items, setItems] = useState([]);
   const [order, setOrder] = useState("createdAt");
   const [offset, setOffset] = useState(0);
@@ -74,8 +76,9 @@ function App() {
   }, [order, handleLoad]);
 
   return (
-    <LocaleContext.Provider value={"ko"}>
+    <LocaleContext.Provider value={locale}>
       <div>
+        <LocaleSelect value={locale} onChange={setLocale} />
         <div>
           <button onClick={handleNewestClick}>최신순</button>
           <button onClick={handleBestClick}>인기순</button>
